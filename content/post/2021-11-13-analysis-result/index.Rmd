@@ -1,0 +1,122 @@
+---
+title: Analysis Result
+author: ''
+date: '2021-11-16'
+slug: analysis-result
+categories: []
+tags: []
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(plotly)
+
+```
+# Analysis on Lending data of Australia
+
+### Background
+
+Based on data disclosed by [Australia Bureau of Statistics](https://www.abs.gov.au/AUSSTATS/abs@.nsf/Lookup/5601.0Main+Features1Dec%202018?OpenDocument=), in 2018, lending to household has reached a lowest point since 2015 and lending to commercial kept on fluctuating during 2015 to 2018.
+
+Lending to household, or lending to individual provides a general estimation on citizen's willingness on consumption. With a sharp decrease on household lending, there should be a clear trend on national consumption willingness.
+
+On the other hand, lending to commercial provides a view on the macro economics.
+
+In this analysis, we try to understand the trend of lending volume in 2018 to generate some insignt on the macro economics.
+
+### Data Preparation
+
+Data source of this analysis comes from [Australia Bureau of Statistics](https://stat.data.abs.gov.au//Index.aspx?QueryId=386). This contains the value of commitment of 59 types of Loan Purpose under 4 main Categories are contained. Below table\@ref(tab:head) shows a partial list of the loan purpose.
+
+```{r head, echo=FALSE, message=FALSE, warning=FALSE}
+purpose= read.csv("LENDING.csv")
+
+cate = data.frame(unique(purpose[c("Finance.Type","Purpose")]))
+
+attach(cate)
+
+knitr::kable(head(cate[order(Purpose),],5), caption = "Loan Purpose")
+
+```
+Usually, lending is splitting into personal loan and commercial loan. In this case, we use a pie chart to see the distribution of each of the loan types. From the below chart\@ref(fig:type), we can clearly see that, Commercial Financing and Personal Financing took up most of percentile. This supports the assumption we have at the beginning of this section.
+```{r type, echo=FALSE, fig.cap='Distribution of Financing Purpose', tidy=FALSE}
+
+type = purpose %>% 
+  group_by(Finance.Type)%>%
+  summarise(total_commitement = sum(Value, na.rm = TRUE))
+
+p<-ggplot(data=type, aes(x="", y=total_commitement,fill = Finance.Type)) +
+  geom_bar(width = 1,stat="identity")+ 
+  coord_polar("y", start=0)+ 
+  scale_fill_brewer(palette="Blues")+
+  theme_minimal()
+p
+
+```
+### General Understanding
+
+Although we have a general view that Personal loan kept on decreasing since 2015, while Commercial Financing is fluctuating, we need a deeper understanding on how loan commitment behaved in 2018. Here we first generate a line chart for the total commitment\@ref(fig:smooth), and followed with a combine line chart of separate types of loans\@ref(fig:two).
+
+```{r smooth, echo=FALSE, fig.cap='Total value of commitments trend and Regression Plot', message=FALSE, warning=FALSE, tidy=FALSE}
+total = purpose %>% 
+  group_by(TIME)%>%
+  summarise(total_commitement = sum(Value, na.rm = TRUE))
+
+y_m = separate(data = total, col = TIME, into = c("Year", "Month"), sep = "-")
+
+y_m$Month = as.integer(y_m$Month)
+
+p<-ggplot(data=y_m, aes(x=Month, y=total_commitement)) +
+  geom_point(shape = 1)  +
+  geom_smooth(method = lm)
+p
+
+```
+
+```{r two, echo=FALSE, fig.cap='Commercial and Personal Loan Trend', message=FALSE, warning=FALSE, tidy=FALSE}
+
+total_type = purpose %>% 
+  group_by(TIME,Finance.Type)%>%
+  summarise(total_commitement = sum(Value, na.rm = TRUE))
+
+total_type = separate(data = total_type, col = TIME, into = c("Year", "Month"), sep = "-")
+
+total_type$Month = as.integer(total_type$Month)
+
+total_type = total_type%>%
+  filter(Finance.Type=='Commercial Finance'|Finance.Type=='Personal Finance')
+
+p<-ggplot(data=total_type, aes(x=Month, y=total_commitement)) +
+  geom_line(aes(color = Finance.Type, linetype = Finance.Type)) + 
+  scale_color_manual(values = c("darkred", "steelblue"))
+p
+
+```
+
+As a result, we can still clearly see the trend. For personal loan, the value keep on decreasing during the 11 months, while commercial loan increase and fluctuating.
+
+### Relationship with Economic Estimators
+
+The main purpose of this analysis is to understand the relationship between loan commitment and some economic estimators.
+
+As Australia government only disclosed [CPI (Consumer Price Inflation)](https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia/sep-2021) estimator every three months, it would not be easy to compare CPI with personal loan commitment in one plot.
+
+From graph below\@ref(fig:cpi), we can see a significant decline during 2018, which fits the decrease of Personal Loan commitment.
+
+```{r cpi, echo=FALSE, fig.cap='CPI Trend from 2014 to 2021', message=FALSE, warning=FALSE, tidy=FALSE}
+
+cpi = read.csv("CPI.csv")
+colnames(cpi)[1]<-c("Month")
+p<-ggplot(data=cpi, aes(x=Month, y=CPI,group = 1)) +
+  geom_line(linetype = "dashed")+
+  geom_point() + 
+  theme(axis.text.x = element_text(size=10, angle=45))
+p
+
+```
+
+### Conclusion
+
+In conclusion, personal loan commitment is a way to reflect the Consumer Price Inflaction. These two estimators are highly correlated and shows the trend of citizen consumption level.

@@ -1,0 +1,74 @@
+---
+title: Visualization using ggplot
+author: 'Qiyuan Yang'
+date: '2021-11-13'
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+purpose= read.csv("LENDING.csv")
+
+```
+
+This dataset contains information of the value of commitments of each type of loan purpose from January 2018 to November 2018. 
+
+<!--more-->
+
+Here we try to show a total trend of the value of commitments.\@ref(fig:total)
+
+```{r total, echo=FALSE, fig.cap='Total value of commitments trend', tidy=FALSE}
+
+total = purpose %>% 
+  group_by(TIME)%>%
+  summarise(total_commitement = sum(Value, na.rm = TRUE))
+
+p<-ggplot(data=total, aes(x=TIME, y=total_commitement)) +
+  geom_point(shape = 1)  
+p
+
+```
+We can see a clear growth trend on the total financing commitment, so we can do a smoothing with this dataset. Before this, we need a transform of the current data table as the **TIME** feature here is not a variable that can us to fit the *geom_smooth* function.
+
+```{r smooth, echo=FALSE, fig.cap='Total value of commitments trend and Regression Plot', message=FALSE, warning=FALSE, tidy=FALSE}
+
+y_m = separate(data = total, col = TIME, into = c("Year", "Month"), sep = "-")
+
+y_m$Month = as.integer(y_m$Month)
+
+p<-ggplot(data=y_m, aes(x=Month, y=total_commitement)) +
+  geom_point(shape = 1)  +
+  geom_smooth(method = lm)
+p
+
+```
+
+There is a **significant** growing trend in the plot above\@ref(fig:smooth), and with a 95% confidence band the gray area covers most of the points. However, we can see that some of the points are higher than the expected value, and there seems like a seasonal trend for these points. **3rd, 6th months** are higher than other months, and there is also a growing trend after September. In this case we can guess that the total commitement may have seasonal behaviour, and we can test it if we have more data.
+
+
+But each type of financing purpose actually make difference. 
+
+We can see from the pie chart below,\@ref(fig:type) Commercial Financing and Personal Financing took up most of the Financing commitment while the remaining two financing purpose even not taking up to 1%.
+
+```{r type, echo=FALSE, fig.cap='Distribution of Financing Purpose', tidy=FALSE}
+
+type = purpose %>% 
+  group_by(Finance.Type)%>%
+  summarise(total_commitement = sum(Value, na.rm = TRUE))
+
+p<-ggplot(data=type, aes(x="", y=total_commitement,fill = Finance.Type)) +
+  geom_bar(width = 1,stat="identity")+ 
+  coord_polar("y", start=0)+ 
+  scale_fill_brewer(palette="Blues")+
+  theme_minimal()
+p
+
+```
+

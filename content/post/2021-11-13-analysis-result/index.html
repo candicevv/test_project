@@ -1,0 +1,108 @@
+---
+title: Analysis Result
+author: ''
+date: '2021-11-16'
+slug: analysis-result
+categories: []
+tags: []
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="analysis-on-lending-data-of-australia" class="section level1">
+<h1>Analysis on Lending data of Australia</h1>
+<div id="background" class="section level3">
+<h3>Background</h3>
+<p>Based on data disclosed by <a href="https://www.abs.gov.au/AUSSTATS/abs@.nsf/Lookup/5601.0Main+Features1Dec%202018?OpenDocument=">Australia Bureau of Statistics</a>, in 2018, lending to household has reached a lowest point since 2015 and lending to commercial kept on fluctuating during 2015 to 2018.</p>
+<p>Lending to household, or lending to individual provides a general estimation on citizen’s willingness on consumption. With a sharp decrease on household lending, there should be a clear trend on national consumption willingness.</p>
+<p>On the other hand, lending to commercial provides a view on the macro economics.</p>
+<p>In this analysis, we try to understand the trend of lending volume in 2018 to generate some insignt on the macro economics.</p>
+</div>
+<div id="data-preparation" class="section level3">
+<h3>Data Preparation</h3>
+<p>Data source of this analysis comes from <a href="https://stat.data.abs.gov.au//Index.aspx?QueryId=386">Australia Bureau of Statistics</a>. This contains the value of commitment of 59 types of Loan Purpose under 4 main Categories are contained. Below table<a href="#tab:head">1</a> shows a partial list of the loan purpose.</p>
+<table>
+<caption><span id="tab:head">Table 1: </span>Loan Purpose</caption>
+<colgroup>
+<col width="5%" />
+<col width="22%" />
+<col width="71%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Finance.Type</th>
+<th align="left">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">3455</td>
+<td align="left">Lease Finance</td>
+<td align="left">Agricultural machinery and equipment</td>
+</tr>
+<tr class="even">
+<td align="left">1673</td>
+<td align="left">Personal Finance</td>
+<td align="left">Boats, caravans and trailers</td>
+</tr>
+<tr class="odd">
+<td align="left">3741</td>
+<td align="left">Lease Finance</td>
+<td align="left">Construction and earthmoving equipment</td>
+</tr>
+<tr class="even">
+<td align="left">3972</td>
+<td align="left">Commercial Finance</td>
+<td align="left">Construction Finance - Alterations and Additions</td>
+</tr>
+<tr class="odd">
+<td align="left">3015</td>
+<td align="left">Commercial Finance</td>
+<td align="left">Construction Finance - Erection of dwellings for rent/resale</td>
+</tr>
+</tbody>
+</table>
+Usually, lending is splitting into personal loan and commercial loan. In this case, we use a pie chart to see the distribution of each of the loan types. From the below chart<a href="#fig:type">1</a>, we can clearly see that, Commercial Financing and Personal Financing took up most of percentile. This supports the assumption we have at the beginning of this section.
+<div class="figure"><span style="display:block;" id="fig:type"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/type-1.png" alt="Distribution of Financing Purpose" width="672" />
+<p class="caption">
+Figure 1: Distribution of Financing Purpose
+</p>
+</div>
+</div>
+<div id="general-understanding" class="section level3">
+<h3>General Understanding</h3>
+<p>Although we have a general view that Personal loan kept on decreasing since 2015, while Commercial Financing is fluctuating, we need a deeper understanding on how loan commitment behaved in 2018. Here we first generate a line chart for the total commitment<a href="#fig:smooth">2</a>, and followed with a combine line chart of separate types of loans<a href="#fig:two">3</a>.</p>
+<div class="figure"><span style="display:block;" id="fig:smooth"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/smooth-1.png" alt="Total value of commitments trend and Regression Plot" width="672" />
+<p class="caption">
+Figure 2: Total value of commitments trend and Regression Plot
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:two"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/two-1.png" alt="Commercial and Personal Loan Trend" width="672" />
+<p class="caption">
+Figure 3: Commercial and Personal Loan Trend
+</p>
+</div>
+<p>As a result, we can still clearly see the trend. For personal loan, the value keep on decreasing during the 11 months, while commercial loan increase and fluctuating.</p>
+</div>
+<div id="relationship-with-economic-estimators" class="section level3">
+<h3>Relationship with Economic Estimators</h3>
+<p>The main purpose of this analysis is to understand the relationship between loan commitment and some economic estimators.</p>
+<p>As Australia government only disclosed <a href="https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia/sep-2021">CPI (Consumer Price Inflation)</a> estimator every three months, it would not be easy to compare CPI with personal loan commitment in one plot.</p>
+<p>From graph below<a href="#fig:cpi">4</a>, we can see a significant decline during 2018, which fits the decrease of Personal Loan commitment.</p>
+<div class="figure"><span style="display:block;" id="fig:cpi"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/cpi-1.png" alt="CPI Trend from 2014 to 2021" width="672" />
+<p class="caption">
+Figure 4: CPI Trend from 2014 to 2021
+</p>
+</div>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<p>In conclusion, personal loan commitment is a way to reflect the Consumer Price Inflaction. These two estimators are highly correlated and shows the trend of citizen consumption level.</p>
+</div>
+</div>

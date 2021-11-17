@@ -1,0 +1,35 @@
+---
+title: Visualization using ggplot
+author: 'Qiyuan Yang'
+date: '2021-11-13'
+
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>This dataset contains information of the value of commitments of each type of loan purpose from January 2018 to November 2018.</p>
+<!--more-->
+<p>Here we try to show a total trend of the value of commitments.<a href="#fig:total">1</a></p>
+<div class="figure"><span style="display:block;" id="fig:total"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/total-1.png" alt="Total value of commitments trend" width="672" />
+<p class="caption">
+Figure 1: Total value of commitments trend
+</p>
+</div>
+<p>We can see a clear growth trend on the total financing commitment, so we can do a smoothing with this dataset. Before this, we need a transform of the current data table as the <strong>TIME</strong> feature here is not a variable that can us to fit the <em>geom_smooth</em> function.</p>
+<div class="figure"><span style="display:block;" id="fig:smooth"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/smooth-1.png" alt="Total value of commitments trend and Regression Plot" width="672" />
+<p class="caption">
+Figure 2: Total value of commitments trend and Regression Plot
+</p>
+</div>
+<p>There is a <strong>significant</strong> growing trend in the plot above<a href="#fig:smooth">2</a>, and with a 95% confidence band the gray area covers most of the points. However, we can see that some of the points are higher than the expected value, and there seems like a seasonal trend for these points. <strong>3rd, 6th months</strong> are higher than other months, and there is also a growing trend after September. In this case we can guess that the total commitement may have seasonal behaviour, and we can test it if we have more data.</p>
+<p>But each type of financing purpose actually make difference.</p>
+<p>We can see from the pie chart below,<a href="#fig:type">3</a> Commercial Financing and Personal Financing took up most of the Financing commitment while the remaining two financing purpose even not taking up to 1%.</p>
+<div class="figure"><span style="display:block;" id="fig:type"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/type-1.png" alt="Distribution of Financing Purpose" width="672" />
+<p class="caption">
+Figure 3: Distribution of Financing Purpose
+</p>
+</div>

@@ -1,0 +1,67 @@
+---
+title: Data Preparation
+author: ''
+date: '2021-10-03'
+slug: []
+categories:
+  - ''
+tags:
+  - ''
+description: 'Financing is always a important section of the social economic sector. Both individual and corporate may need financing during daily life and daily business. It would be very important to understand the lending data and ratios of a country to understand citizen's financing need, to come up with some conclusion on the economic trend.'
+thumbnail: ''
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(dplyr)
+
+```
+
+# Statistics of Lending
+
+Financing is always a important section of the social economic sector. Both individual and corporate may need financing during daily life and daily business. It would be very important to understand the lending data and ratios of a country to understand citizen's financing need, to come up with some conclusion on the economic trend.
+
+<!--more-->
+
+I got data from Australia Bureau of Statistics on lending data in 2018. There are 59 types of Loan Purpose under 4 main Categories are contained in this dataset:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+purpose= read.csv("LENDING.csv")
+
+head(unique(purpose[c("Purpose")]))
+
+
+```
+
+These data covers multiple regions in Australia. However, as there is no longitude or latitude provided, we are not able to use geoplot for the later analysis.
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+unique(purpose[c("Region")])
+
+```
+
+
+Firstly, we try to understand the data distribution of this dataset. We can see that although this is a list of data with around 7500 rows, for the main field "Value", more than 80% of data is missing due to some reasons. As this is a dataset that contains only the sub category data, we would include the table for main category later if we don't have any ways to fill in the missing values.
+
+```{r sum1, echo=FALSE, fig.cap='Distribution of Financing Purpose', tidy=FALSE}
+
+sum1 = purpose %>% 
+  mutate(ints = cut(Value, breaks= c(0,20000,50000,100000,200000), right = F)) %>%
+  group_by(ints) %>%
+  summarise(n = n())
+
+sum1
+
+```
+
+For the remaining values, we want to check if the distribution is normal. As the remaining values has a volume larger than 1000, it is still possible to check the distribution with a histogram.
+
+```{r plot1, echo=FALSE, fig.cap='Distribution of Financing Value', tidy=FALSE}
+
+hist(purpose$Value,col="blue",main="Distribution of Financing Value")
+
+
+```
+
+From the plot above, we can clearly see that the Value is not normal distributed. Value are right tailed.

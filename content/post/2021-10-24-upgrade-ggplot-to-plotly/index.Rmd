@@ -1,0 +1,57 @@
+---
+title: Upgrade ggplot to Plotly
+author: ''
+date: '2021-11-14'
+slug: upgrade-ggplot-to-plotly
+categories: []
+tags: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(plotly)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+purpose= read.csv("LENDING.csv")
+
+```
+
+To create a better interative plots, I try to convert the ggplots created in last post into a Ploty plot.
+
+Here, I only try to use *ggplotly* as a converter.
+
+<!--more-->
+```{r total, echo=FALSE, fig.cap='Total value of commitments trend', tidy=FALSE}
+
+total = purpose %>% 
+  group_by(TIME)%>%
+  summarise(total_commitement = sum(Value, na.rm = TRUE))
+
+p<-ggplot(data=total, aes(x=TIME, y=total_commitement)) +
+  geom_point(shape = 1)  
+ggplotly(p)
+
+```
+
+```{r smooth, echo=FALSE, fig.cap='Total value of commitments trend and Regression Plot', message=FALSE, warning=FALSE, tidy=FALSE}
+
+y_m = separate(data = total, col = TIME, into = c("Year", "Month"), sep = "-")
+
+y_m$Month = as.integer(y_m$Month)
+
+p<-ggplot(data=y_m, aes(x=Month, y=total_commitement)) +
+  geom_point(shape = 1)  +
+  geom_smooth(method = lm)
+ggplotly(p)
+
+```
+
+
+
+
+

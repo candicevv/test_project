@@ -1,0 +1,45 @@
+---
+title: Data Preparation
+author: ''
+date: '2021-10-03'
+slug: []
+categories:
+  - ''
+tags:
+  - ''
+description: ''
+thumbnail: ''
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="statistics-of-lending" class="section level1">
+<h1>Statistics of Lending</h1>
+<p>Financing is always a important section of the social economic sector. Both individual and corporate may need financing during daily life and daily business. It would be very important to understand the lending data and ratios of a country to understand citizen’s financing need, to come up with some conclusion on the economic trend.</p>
+<p>I got data from Australia Bureau of Statistics on lending data in 2018. There are 59 types of Loan Purpose under 4 main Categories are contained in this dataset:</p>
+<pre><code>##                                                     Purpose
+## 1    New cars and station wagons - under depreciation limit
+## 100   New cars and station wagons - over depreciation limit
+## 199 Used cars and station wagons - under depreciation limit
+## 298  Used cars and station wagons - over depreciation limit
+## 397                       Other motor vehicles - New trucks
+## 496                      Other motor vehicles - Used trucks</code></pre>
+<p>Firstly, we try to understand the data distribution of this dataset. We can see that although this is a list of data with around 7500 rows, for the main field “Value”, more than 80% of data is missing due to some reasons. As this is a dataset that contains only the sub category data, we would include the table for main category later if we don’t have any ways to fill in the missing values.</p>
+<pre><code>## # A tibble: 5 x 2
+##   ints              n
+##   &lt;fct&gt;         &lt;int&gt;
+## 1 [0,2e+04)       602
+## 2 [2e+04,5e+04)   308
+## 3 [5e+04,1e+05)   236
+## 4 [1e+05,2e+05)   256
+## 5 &lt;NA&gt;           6023</code></pre>
+<p>For the remaining values, we want to check if the distribution is normal. As the remaining values has a volume larger than 1000, it is still possible to check the distribution with a histogram.</p>
+<div class="figure"><span style="display:block;" id="fig:plot1"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/plot1-1.png" alt="Distribution of Financing Value" width="672" />
+<p class="caption">
+Figure 1: Distribution of Financing Value
+</p>
+</div>
+<p>From the plot above, we can clearly see that the Value is not normal distributed. Value are right tailed.</p>
+</div>
