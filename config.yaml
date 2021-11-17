@@ -1,0 +1,35 @@
+baseurl: /
+title: Analysis on Australia Lending in 2018
+languageCode: en-us
+paginate: '10'
+theme: Mainroad
+disqusShortname: ''
+googleAnalytics: ''
+Author:
+  avatar: img/avatar.png
+  bio: Student on Class COMM2501/5501
+  name: Qiyuan Yang
+Params:
+  authorbox: yes
+  description:
+  logo:
+    subtitle: Economic and Lending
+  opengraph: yes
+  pager: yes
+  post_meta:
+    - date
+    - categories
+  readmore: no
+  sidebar:
+    home: right
+    list: right
+    single: right
+    widgets:
+      - search
+      - recent
+      - categories
+      - taglist
+  twitter_cards: no
+  widgets:
+    recent_num: 5
+    tags_counter: no
